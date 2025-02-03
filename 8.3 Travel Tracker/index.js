@@ -30,7 +30,7 @@ app.get("/", async (req, res) => {
 
 app.post("/add", async (req, res) => {
   const input = req.body["country"];
-  const result = await db.query("select (country_code) from countries where country = ($1)", [input]);
+  const result = await db.query("select (country_code) from countries where LOWER(country) = "%" || ($1)" || "%", [input.tolowercase()]);
 
   if (result.rows.length !== 0) {
     const code = result.rows[0];
